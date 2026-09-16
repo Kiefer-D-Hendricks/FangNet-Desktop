@@ -36,3 +36,8 @@ jobs:
 
       - name: Build with Tauri Action
         uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # Only upload on tag builds; empty on branch builds means "skip uploads".
+          tagName: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
