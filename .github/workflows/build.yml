@@ -41,3 +41,11 @@ jobs:
         with:
           # Only upload on tag builds; empty on branch builds means "skip uploads".
           tagName: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
+          releaseName: 'FangNet Desktop v__VERSION__'
+          releaseBody: |-
+            First release of FangNet Desktop — your hub for the FangNet universe: Community, Chat, Cloud, and FangOS.
+
+            **Downloads**
+            - Windows: .msi installer and NSIS setup .exe
+            - Linux: .AppImage and .deb
+            - macOS: .dmg (unsigned — on first launch, right-click the app and choose Open)
