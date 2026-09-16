@@ -15,9 +15,13 @@ Clicking a button opens that service in its own dedicated native window
 
 ## Downloads
 
-Windows (`.exe` installer) and Linux (AppImage) builds are produced automatically
-by GitHub Actions on every push to `main` — grab them from the
-[Actions tab](../../actions/workflows/build.yml).
+Windows (`.exe` installer), Linux (AppImage), and macOS (`.dmg`) builds are
+produced automatically by GitHub Actions on every push to `main` — grab them
+from the [Actions tab](../../actions/workflows/build.yml).
+
+> **macOS note:** the `.dmg` is unsigned (hobby project, no Apple Developer
+> account), so Gatekeeper will block it on first launch. Right-click the app
+> and choose **Open**, then confirm, and it'll run fine after that.
 
 ## Local development
 
