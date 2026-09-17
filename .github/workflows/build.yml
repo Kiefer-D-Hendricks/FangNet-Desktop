@@ -43,7 +43,7 @@ jobs:
           tagName: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
           releaseName: 'FangNet Desktop v__VERSION__'
           releaseBody: |-
-            First release of FangNet Desktop — your hub for the FangNet universe: Community, Chat, Cloud, and FangOS.
+            FangNet Desktop — your hub for the FangNet universe: Community, Chat, Cloud, and FangOS.
 
             **Downloads**
             - Windows: .msi installer and NSIS setup .exe

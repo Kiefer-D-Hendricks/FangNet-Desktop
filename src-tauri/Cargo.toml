@@ -1,6 +1,6 @@
 [package]
 name = "fangnet-desktop"
-version = "0.1.0"
+version = "0.1.1"
 description = "Native desktop hub for Kiefer's self-hosted FangNet services"
 authors = ["Kiefer D. Hendricks"]
 license = "GPL-3.0-only"
