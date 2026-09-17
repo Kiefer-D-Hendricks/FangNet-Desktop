@@ -49,3 +49,31 @@ jobs:
             - Windows: .msi installer and NSIS setup .exe
             - Linux: .AppImage and .deb
             - macOS: .dmg (unsigned — on first launch, right-click the app and choose Open)
+
+      - name: Strip bundled libwayland from AppImage
+        # Workaround for tauri-apps/tauri#11988: linuxdeploy bundles
+        # libwayland-*.so* into the AppImage, but the host Mesa EGL stack
+        # must load the *system* libwayland-client. The stale bundled copy
+        # makes WebKitGTK abort at startup with:
+        #   "Could not create default EGL display: EGL_BAD_PARAMETER. Aborting..."
+        # So repack the AppImage without those libraries and re-upload it.
+        if: matrix.platform == 'ubuntu-latest' && github.ref_type == 'tag'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euxo pipefail
+          TAG="${{ github.ref_name }}"
+          WORKDIR="$(mktemp -d)"
+          cd "$WORKDIR"
+          gh release download "$TAG" --pattern '*.AppImage'
+          APPIMAGE="$(ls *.AppImage)"
+          ./"$APPIMAGE" --appimage-extract
+          rm -f squashfs-root/usr/lib/libwayland-*.so*
+          if ls squashfs-root/usr/lib/libwayland-* >/dev/null 2>&1; then
+            echo "ERROR: libwayland still bundled!" >&2
+            exit 1
+          fi
+          wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O appimagetool.AppImage
+          chmod +x appimagetool.AppImage
+          ./appimagetool.AppImage --appimage-extract-and-run squashfs-root "$APPIMAGE"
+          gh release upload "$TAG" "$APPIMAGE" --clobber
